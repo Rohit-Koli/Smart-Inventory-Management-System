@@ -1,0 +1,14 @@
+@import 'flowbite/dist/flowbite.css';
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
+
+
+.link {
+  color: black;
+  text-decoration: none;
+}
+
+.active-link {
+  color: red;
+  font-weight: bold;
+}

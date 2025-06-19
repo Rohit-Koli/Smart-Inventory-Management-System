@@ -1,0 +1,20 @@
+package com.backend.services;
+
+import com.backend.entities.UserEntity;
+//import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+//@Service
+public interface UserService {
+    void saveUser(UserEntity user);
+    UserEntity getUserById(Long userId);
+    UserEntity updateUser(UserEntity user);
+    boolean deleteUser(Long userId);
+    boolean isUserExist(Long userId);
+    boolean isUserExistByEmail(String email);
+    List<UserEntity> getAllUsers();
+    Optional<UserEntity> findByEmailAndPassword(String email,String password);
+    UserEntity userDetails(String email);
+}

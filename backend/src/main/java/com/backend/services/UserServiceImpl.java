@@ -22,21 +22,23 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserEntity getUserById(Long userId) {
-//        Optional<UserEntity> user =userRepo.findById(userId).isPresent()
         UserEntity getUser=userRepo.findById(userId).orElseThrow(()->new RuntimeException("User Not Found"));
         return getUser;
     }
 
     @Override
     public UserEntity updateUser(UserEntity user) {
-        if (userRepo.existsByEmail(user.getEmail())){
-            UserEntity existUser= new UserEntity();
+        Optional<UserEntity> optionalUser = userRepo.findById(user.getId());
+        if (optionalUser.isPresent()){
+            UserEntity existUser=optionalUser.get();
             existUser.setAbout(user.getAbout());
+            existUser.setEmail(user.getEmail());
             existUser.setContact(user.getContact());
+            existUser.setUsername(user.getUsername());
             existUser.setPassword(user.getPassword());
             return userRepo.save(existUser);
         }
-        return user;
+        return null;
     }
 
     @Override

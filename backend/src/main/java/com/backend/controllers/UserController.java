@@ -5,6 +5,8 @@ import com.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 public class UserController {
 
@@ -22,13 +24,18 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @DeleteMapping("deleteUser")
+    @DeleteMapping("/deleteUser")
     public boolean deleteUserBy(@RequestParam Long id){
         return userService.deleteUser(id);
     }
 
-    
-
-
+    @PutMapping("/update")
+    public String updateUser(@RequestBody UserEntity user){
+        UserEntity updatedUser=userService.updateUser(user);
+        if (updatedUser!=null){
+            return "User Updated";
+        }
+        return "User Not Updated !";
+    }
 
 }

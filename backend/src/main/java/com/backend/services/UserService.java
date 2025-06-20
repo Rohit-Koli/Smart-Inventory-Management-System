@@ -1,12 +1,9 @@
 package com.backend.services;
 
 import com.backend.entities.UserEntity;
-//import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
-//@Service
 public interface UserService {
     void saveUser(UserEntity user);
     UserEntity getUserById(Long userId);

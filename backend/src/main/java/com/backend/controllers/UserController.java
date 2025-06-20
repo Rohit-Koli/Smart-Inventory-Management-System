@@ -3,6 +3,7 @@ package com.backend.controllers;
 import com.backend.entities.UserEntity;
 import com.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +22,12 @@ public class UserController {
     }
 
     @GetMapping("/getUser")
-    public UserEntity getUserWithId(@RequestParam Long id){
-        return userService.getUserById(id);
+    public ResponseEntity<UserEntity> getUserWithId(@RequestParam Long id){
+        UserEntity user=userService.getUserById(id);
+        if (user==null ){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/deleteUser")
@@ -39,9 +44,9 @@ public class UserController {
         return "User Not Updated !";
     }
 
-    @GetMapping("/getAllUsers")
-    public List<UserEntity> printAllUsers(){
-        return userService.getAllUsers();
-    }
+//    @GetMapping("/getAllUsers")
+//    public List<UserEntity> printAllUsers(){
+//        return userService.getAllUsers();
+//    }
 
 }

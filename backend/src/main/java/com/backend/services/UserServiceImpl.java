@@ -4,9 +4,7 @@ import com.backend.entities.UserEntity;
 import com.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,7 +20,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserEntity getUserById(Long userId) {
-        UserEntity getUser=userRepo.findById(userId).orElseThrow(()->new RuntimeException("User Not Found"));
+        UserEntity getUser=userRepo.findById(userId).orElse(null);
         return getUser;
     }
 
@@ -61,13 +59,27 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<UserEntity> getAllUsers() {
-        List<UserEntity> users=userRepo.findAll();
-        if (!users.isEmpty()){
-            return users;
+    public boolean changePassword(Long id, String oldPassword, String newPassword) {
+        Optional<UserEntity> updateUser=userRepo.findById(id);
+        if (updateUser.isPresent()){
+            UserEntity user =updateUser.get();
+            if (!user.getPassword().equals(oldPassword)){
+                return false;
+            }
+            user.setPassword(newPassword);
+            return true;
         }
-        return List.of();
+        return false;
     }
+
+//    @Override
+//    public List<UserEntity> getAllUsers() {
+//        List<UserEntity> users=userRepo.findAll();
+//        if (!users.isEmpty()){
+//            return users;
+//        }
+//        return List.of();
+//    }
 
     @Override
     public Optional<UserEntity> findByEmailAndPassword(String email, String password) {
@@ -77,6 +89,10 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserEntity userDetails(String email) {
+        Optional<UserEntity> user=userRepo.findByEmail(email);
+        if (user.isPresent()){
+            return user.get();
+        }
         return null;
     }
 }

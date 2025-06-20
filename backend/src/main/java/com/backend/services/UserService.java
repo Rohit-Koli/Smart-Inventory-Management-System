@@ -11,7 +11,8 @@ public interface UserService {
     boolean deleteUser(Long userId);
     boolean isUserExist(Long userId);
     boolean isUserExistByEmail(String email);
-    List<UserEntity> getAllUsers();
+//    List<UserEntity> getAllUsers();
+    boolean changePassword(Long id,String oldPassword,String newPassword);
     Optional<UserEntity> findByEmailAndPassword(String email,String password);
     UserEntity userDetails(String email);
 }

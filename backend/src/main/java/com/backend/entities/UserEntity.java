@@ -1,5 +1,6 @@
 package com.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class UserEntity {
     private String about;
     @Column
     private String role;
-    @OneToMany(mappedBy = "createdBy")
-    @Column
+    @OneToMany(mappedBy = "createdBy",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Product> products;
 }

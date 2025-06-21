@@ -1,5 +1,6 @@
 package com.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,5 +34,6 @@ public class Product {
     // Relationship with User
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private UserEntity createdBy;
 }

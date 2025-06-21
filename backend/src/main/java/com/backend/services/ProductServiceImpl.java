@@ -24,12 +24,18 @@ public class ProductServiceImpl implements ProductService{
         Optional<Product> p =repo.findById(id);
         if(p.isPresent()){
             Product pr=p.get();
-            pr.setName(product.getName());
-            pr.setCategory(product.getCategory());
-            pr.setBrand(product.getBrand());
-            pr.setQuantity(product.getQuantity());
-            pr.setPrice(product.getPrice());
-            pr.setDescription(product.getDescription());
+            if (product.getName()!=null)
+                pr.setName(product.getName());
+            if (product.getCategory()!=null)
+                pr.setCategory(product.getCategory());
+            if (product.getBrand()!=null)
+                pr.setBrand(product.getBrand());
+            if (product.getQuantity()!=0)
+                pr.setQuantity(product.getQuantity());
+            if (product.getPrice()!=0)
+                pr.setPrice(product.getPrice());
+            if (product.getDescription()!=null)
+                pr.setDescription(product.getDescription());
             product.setUpdatedAt(LocalDateTime.now());
             return ResponseEntity.ok(repo.save(pr));
         }

@@ -33,13 +33,13 @@ public class ProductController {
     }
 
     @GetMapping("/getProduct")
-    public Product getProduct(@RequestParam Long id){
-        return service.getProductById(id).getBody();
+    public ResponseEntity<Product> getProduct(@RequestParam Long id){
+        return service.getProductById(id);
     }
 
     @PutMapping("/updateProduct")
-    public Product updateProduct(@RequestParam Long id,@RequestBody Product product){
-        return service.updateProduct(id,product).getBody();
+    public ResponseEntity<Product> updateProduct(@RequestParam Long id,@RequestBody Product product){
+        return service.updateProduct(id,product);
     }
 
     @DeleteMapping("/deleteProduct")

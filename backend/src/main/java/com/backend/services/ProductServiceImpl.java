@@ -70,4 +70,13 @@ public class ProductServiceImpl implements ProductService{
         }
         return ResponseEntity.notFound().build();
     }
+
+    @Override
+    public List<Product> findProductsByName(String name) {
+        List<Product> products=repo.findByNameContainingIgnoreCase(name);
+        if (!products.isEmpty()){
+            return products;
+        }
+        return List.of();
+    }
 }

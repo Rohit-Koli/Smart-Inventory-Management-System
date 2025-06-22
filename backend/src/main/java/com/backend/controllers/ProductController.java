@@ -59,4 +59,9 @@ public class ProductController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/findProduct/{name}")
+    List<Product> findProduct(@PathVariable String name){
+        return service.findProductsByName(name);
+    }
+
 }

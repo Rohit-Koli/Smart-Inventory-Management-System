@@ -11,4 +11,5 @@ public interface ProductService {
     boolean deleteProduct(Long id);
     List<Product> getAllProducts();
     ResponseEntity<Product> getProductById(Long id);
+    List<Product> findProductsByName(String name);
 }

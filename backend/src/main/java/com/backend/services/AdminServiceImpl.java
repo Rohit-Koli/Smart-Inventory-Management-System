@@ -4,9 +4,15 @@ import com.backend.entities.AdminEntity;
 import com.backend.entities.Product;
 import com.backend.entities.UserEntity;
 import com.backend.repository.AdminRepository;
+import com.backend.repository.ProductRepository;
+import com.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,17 +21,16 @@ public class AdminServiceImpl implements AdminService{
 
     @Autowired
     private AdminRepository repo;
+    @Autowired
+    private ProductRepository productRepo;
+    @Autowired
+    private UserRepository userRepo;
 
     @Override
     public void saveAdmin(AdminEntity admin) {
         repo.save(admin);
     }
 
-    @Override
-    public AdminEntity loginAdmin(String email, String password) {
-        return repo.findByEmailAndPassword(email,password).
-                orElse(null);
-    }
 
     @Override
     public AdminEntity getAdmin(Long id) {
@@ -71,37 +76,75 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
+    public ResponseEntity<AdminEntity> adminLogin(String email, String password) {
+        if (email == null || password == null) {
+            return ResponseEntity.badRequest().build(); // 400 Bad Request
+        }
+
+        AdminEntity admin = repo.findByEmailAndPassword(email,password);
+
+        if (admin == null || !admin.getPassword().equals(password)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 401 Unauthorized
+        }
+
+        return ResponseEntity.ok(admin);
+    }
+
+    @Override
     public long getTotalProducts() {
-        return 0;
+        return productRepo.count();
     }
 
     @Override
     public long getLowStockItemCounts() {
-        return 0;
+        return productRepo.findAll().stream()
+                .filter(p->p.getQuantity()<=10)
+                .count();
     }
 
     @Override
     public double getTodaySalesTotal() {
-        return 0;
+        LocalDate today=LocalDate.now();
+        return productRepo.findAll().stream()
+                .filter(p->p.getCreatedAt()!=null && p.getCreatedAt().toLocalDate().equals(today))
+                .mapToDouble(p->p.getPrice()*p.getQuantity())
+                .sum();
     }
 
     @Override
     public double getMonthlySalesTotal() {
-        return 0;
+        YearMonth currentMonth = YearMonth.now();
+        return productRepo.findAll().stream()
+                .filter(p -> {
+                    if (p.getCreatedAt() == null) return false;
+                    YearMonth createdMonth = YearMonth.from(p.getCreatedAt());
+                    return createdMonth.equals(currentMonth);
+                })
+                .mapToDouble(p -> p.getPrice() * p.getQuantity())
+                .sum();
     }
 
     @Override
     public List<UserEntity> getAllUsers() {
+        List<UserEntity> users=userRepo.findAll();
+        if (!users.isEmpty())
+            return users;
         return List.of();
     }
 
     @Override
     public List<Product> getAllProducts() {
+        List<Product> productsList=productRepo.findAll();
+        if (!productsList.isEmpty())
+            return productsList;
         return List.of();
     }
 
     @Override
     public List<AdminEntity> getAllAdmins() {
+        List<AdminEntity> adminsList=repo.findAll();
+        if (!adminsList.isEmpty())
+            return adminsList;
         return List.of();
     }
 }

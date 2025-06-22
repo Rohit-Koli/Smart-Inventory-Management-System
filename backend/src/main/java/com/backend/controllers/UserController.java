@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
 @RestController
+@RequestMapping("user")
 public class UserController {
 
     @Autowired
@@ -44,9 +42,9 @@ public class UserController {
         return "User Not Updated !";
     }
 
-//    @GetMapping("/getAllUsers")
-//    public List<UserEntity> printAllUsers(){
-//        return userService.getAllUsers();
-//    }
+    @GetMapping("/userLogin")
+   public ResponseEntity<UserEntity> userLogin(@RequestParam String email,String password){
+        return userService.userLogin(email,password);
+    }
 
 }

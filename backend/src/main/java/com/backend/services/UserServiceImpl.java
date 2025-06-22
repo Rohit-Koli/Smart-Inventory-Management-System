@@ -3,6 +3,8 @@ package com.backend.services;
 import com.backend.entities.UserEntity;
 import com.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,11 +31,21 @@ public class UserServiceImpl implements UserService{
         Optional<UserEntity> optionalUser = userRepo.findById(user.getId());
         if (optionalUser.isPresent()){
             UserEntity existUser=optionalUser.get();
-            existUser.setAbout(user.getAbout());
-            existUser.setEmail(user.getEmail());
-            existUser.setContact(user.getContact());
-            existUser.setUsername(user.getUsername());
-            existUser.setPassword(user.getPassword());
+            if (user.getAbout() != null) {
+                existUser.setAbout(user.getAbout());
+            }
+            if (user.getEmail() != null) {
+                existUser.setEmail(user.getEmail());
+            }
+            if (user.getContact() != null) {
+                existUser.setContact(user.getContact());
+            }
+            if (user.getUsername() != null) {
+                existUser.setUsername(user.getUsername());
+            }
+            if (user.getPassword() != null) {
+                existUser.setPassword(user.getPassword());
+            }
             return userRepo.save(existUser);
         }
         return null;
@@ -72,20 +84,18 @@ public class UserServiceImpl implements UserService{
         return false;
     }
 
-//    @Override
-//    public List<UserEntity> getAllUsers() {
-//        List<UserEntity> users=userRepo.findAll();
-//        if (!users.isEmpty()){
-//            return users;
-//        }
-//        return List.of();
-//    }
-
     @Override
-    public Optional<UserEntity> findByEmailAndPassword(String email, String password) {
-        Optional<UserEntity> user=userRepo.findByEmailAndPassword(email,password);
-        return user;
+    public ResponseEntity<UserEntity> userLogin(String email, String password) {
+        if (email==null || password==null){
+            return ResponseEntity.badRequest().build();
+        }
+        UserEntity user=userRepo.findByEmailAndPassword(email, password);
+        if (user==null || !password.equals(user.getPassword())){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(user);
     }
+
 
     @Override
     public UserEntity userDetails(String email) {

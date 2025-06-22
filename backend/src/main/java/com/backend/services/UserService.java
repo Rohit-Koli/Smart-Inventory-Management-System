@@ -1,6 +1,8 @@
 package com.backend.services;
 
 import com.backend.entities.UserEntity;
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -11,8 +13,7 @@ public interface UserService {
     boolean deleteUser(Long userId);
     boolean isUserExist(Long userId);
     boolean isUserExistByEmail(String email);
-//    List<UserEntity> getAllUsers();
     boolean changePassword(Long id,String oldPassword,String newPassword);
-    Optional<UserEntity> findByEmailAndPassword(String email,String password);
+    ResponseEntity<UserEntity> userLogin(String email, String password);
     UserEntity userDetails(String email);
 }

@@ -16,4 +16,5 @@ public interface UserService {
     boolean changePassword(Long id,String oldPassword,String newPassword);
     ResponseEntity<UserEntity> userLogin(String email, String password);
     UserEntity userDetails(String email);
+    UserEntity findByEmail(String email);
 }

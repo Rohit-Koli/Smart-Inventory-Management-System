@@ -11,7 +11,7 @@ const Profile = () => {
       try {
         console.log("Sending email to backend:", user.email);
         const response = await axios.post(
-          "http://localhost:8081/getUser",
+          "http://localhost:8081/user/getUserWithEmail",
           { email: user.email },
           { headers: { "Content-Type": "application/json" } }
         );

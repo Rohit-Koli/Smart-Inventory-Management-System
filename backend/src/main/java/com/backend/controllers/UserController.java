@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -51,9 +53,11 @@ public class UserController {
         return "User Not Updated !";
     }
 
-    @GetMapping("/userLogin")
-   public ResponseEntity<UserEntity> userLogin(@RequestParam String email,String password){
-        return userService.userLogin(email,password);
+    @PostMapping("/userLogin")
+    public ResponseEntity<UserEntity> userLogin(@RequestBody Map<String, String> payload) {
+        String email = payload.get("email");
+        String password = payload.get("password");
+        return userService.userLogin(email, password);
     }
 
 }

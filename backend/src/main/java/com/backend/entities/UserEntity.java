@@ -21,6 +21,7 @@ public class UserEntity {
     private Long id;//Primary Key
     private String username;
     private String password;
+    @Column(unique = true)
     private String email;
     private String contact;
     private String about;

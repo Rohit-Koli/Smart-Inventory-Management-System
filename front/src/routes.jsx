@@ -1,4 +1,3 @@
-// routes.jsx
 import { createBrowserRouter } from 'react-router-dom'
 import Register from './components/Register'
 import Logout from './components/Logout'

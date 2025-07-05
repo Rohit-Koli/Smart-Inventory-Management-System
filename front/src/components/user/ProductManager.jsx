@@ -30,6 +30,7 @@ const ProductManager = ({ userId }) => {
         await axios.post(`${API_BASE}/addProduct?id=${userId}`, form);
       }
       setForm({ name: "", description: "", price: "" });
+      console.log(userId)
       setEditId(null);
       fetchProducts();
     } catch (err) {
